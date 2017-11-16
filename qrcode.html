@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Instascan</title>
+    <script type="text/javascript" src="assets/js/instascan.min.js"></script>
+    <script type="text/javascript" src="assets/js/qrcode.js"></script>
+    <link href="assets/css/demo.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+  <style>
+ .switch {
+  position: relative;
+  display: inline-block;
+  width: 360px;
+  height: 204px;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 156px;
+  width: 156px;
+  left: 24px;
+  bottom: 24px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 6px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(144px);
+  -ms-transform: translateX(144px);
+  transform: translateX(144px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 204px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+.show {
+  display: block !important;
+}
+.hidden {
+  display: none !important;
+  visibility: hidden !important;
+}
+.invisible {
+  visibility: hidden;
+}
+  
+  </style>
+  <body>
+    <h1>BIN Check Point</h1>
+    <center>
+    <video style="width:50%" id="preview"></video></center>
+    <div >
+      Output:<div id="NodeList"></div>  
+      <button id="Btn" onclick="Collected()" class="hidden" >Collected</button> 
+</div>
+    <script type="text/javascript">
+      let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
+      scanner.addListener('scan', function (content) {
+        console.log(content);
+        QueryNodelist(content);
+      });
+      Instascan.Camera.getCameras().then(function (cameras) {
+        if (cameras.length > 0) {
+          scanner.start(cameras[1]);
+        } else {
+          console.error('No cameras found.');
+        }
+      }).catch(function (e) {
+        console.error(e);
+      });
+    </script>
+        
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.6.2/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyAe70VQ4GJFzdybjHh0rTY2AnAYHKO38A0",
+        authDomain: "smartbin-d27c3.firebaseapp.com",
+        databaseURL: "https://smartbin-d27c3.firebaseio.com",
+        projectId: "smartbin-d27c3",
+        storageBucket: "smartbin-d27c3.appspot.com",
+        messagingSenderId: "585337116804"
+      };
+      firebase.initializeApp(config)
+    </script>
+
+  </body>
+</html>
